@@ -1,0 +1,19 @@
+MAS vulnScan {
+
+    infrastructure Centralised
+
+    agents:
+        scanner {
+            beliefs: {};
+            goals: [ start ];
+        };
+
+    classpath:
+        "./build/classes/java/main";
+        "libs/jason-3.3.0.jar";
+
+    aslSourcePath:
+        "./src/agents";
+
+    environment "jason.env.ScanEnvironment"
+}
