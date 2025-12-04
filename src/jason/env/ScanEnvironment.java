@@ -25,7 +25,9 @@ public class ScanEnvironment extends Environment {
 
     @Override
     public void init(String[] args) {
-        try {
+        System.out.println("Init fun in env launched");
+        
+/*         try {
             watchService = FileSystems.getDefault().newWatchService();
             Path path = Paths.get(folderToWatch);
             System.out.println("[ENV] Scanning file: " + path.toFile().getAbsolutePath());
@@ -39,7 +41,7 @@ public class ScanEnvironment extends Environment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+ */    }
 
     private void watchLoop() {
         while (true) {
@@ -88,7 +90,6 @@ public class ScanEnvironment extends Environment {
     @Override
     public boolean executeAction(String agName, Structure action) {
         if (action.getFunctor().equals("scanProject")) {
-            System.out.println("Got a new path of Project to Check ...");
             if (action.getArity() > 0) {
                 folderToWatch = action.getTerm(0).toString().replace("\"", "");
             }
