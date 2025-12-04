@@ -93,10 +93,26 @@ public class ScanEnvironment extends Environment {
                 folderToWatch = action.getTerm(0).toString().replace("\"", "");
             }
             File dir = new File(folderToWatch);
+            try {
+            watchService = FileSystems.getDefault().newWatchService();
+            Path path = Paths.get(folderToWatch);
+            System.out.println("[ENV] Not a test Env *Scanning file: " + path.toFile().getAbsolutePath());
+
+            path.register(watchService, ENTRY_CREATE, ENTRY_MODIFY);
+
+            watcherThread = new Thread(() -> watchLoop());
+            watcherThread.setDaemon(true);
+            watcherThread.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
             if (dir.exists()) {
                 for (File f : Objects.requireNonNull(dir.listFiles())) {
                     if (f.getName().endsWith(".c")) detectVulnerability(f);
                 }
+            }else{
+                System.out.println(folderToWatch + "**** doesn\'t exist\n");
             }
             return true;
         }
